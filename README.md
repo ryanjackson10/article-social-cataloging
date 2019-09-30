@@ -14,4 +14,5 @@ want to improve the aesthetics of the different pages and give it some of the fe
 - have a "popular articles today" section
 - allow users to view other users' profiles
 - allow users to store articles in "folders"
+
 so yeah... a lot...
