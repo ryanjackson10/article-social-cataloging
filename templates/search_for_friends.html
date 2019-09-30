@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.btn {
+  border: none;
+  background-color: #22D43F;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  position:absolute;
+  top:0;
+  right:0;
+
+
+}
+
+.button-primary {
+  border: none;
+  background-color: black;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  color: white;
+}
+
+.button-default {
+  border: none;
+  background-color: black;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  position:absolute;
+  top:0;
+  right:15%;
+  color: white;
+}
+
+
+.btn:hover {background: #1CB235;}
+
+.success {color: white;}
+
+</style>
+</head>
+<body>
+
+<h2 align = "center">Timeline</h2>
+<div>
+  <form method='POST'>
+    <button type = 'submit' name = 'btn' value = 'log' class = 'button-primary'>Log New Article +</button>
+    <button type = 'submit' name = 'btn' value = 'search' class = 'button-primary'>Follow a User</button>
+    <button type = 'submit' name = 'btn' value = 'profile' class = 'button-primary'>My Profile</button>
+</form>
+</div>
+<table>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <tr>
+    <th> User </th>
+    <th>Article (hyperlinked)</th>
+    <th>Review</th>
+  </tr>
+  {% for item in data %}
+  <tr>
+    <td>{{ item.user }}</td>
+    <td><a href={{ item.url }}>{{ item.title }}</a></td>
+    <td>{{ item.review }}</td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+</body>
+
+</html>
+
+
+<script>
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</body>
+</html>
