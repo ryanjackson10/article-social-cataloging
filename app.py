@@ -86,7 +86,7 @@ def profile():
         return 'not logged in!'
 
 @app.route('/profile',methods=['POST'])
-def profile_options(): #users have 4 options from their profile in addition to viewing their posts and the accompanying hyperlinks. They can check their timeline, follow a user, log a new article, or delete and article they've already logged
+def profile_options(): #users have 5 options from their profile in addition to viewing their posts and the accompanying hyperlinks. They can check their timeline, follow a user, log a new article, delete and article they've already logged, or view their followers
     if request.form['btn'] == 'timeline':
         return redirect(url_for('tl'))
     elif request.form['btn'] == 'search':
@@ -95,6 +95,14 @@ def profile_options(): #users have 4 options from their profile in addition to v
         return redirect(url_for('log_new'))
     elif request.form['btn'] == 'delete':
         return redirect(url_for('delete'))
+    elif request.form['btn'] == 'view_followers':
+        return redirect(url_for('followers'))
+
+@app.route('/followers')
+def followers():
+    if 'user' in session:
+        followers_ = [i.user for i in follows_.query.filter_by(followed=session['user'])]
+        return f'your follower(s) are {followers_}!'
 
 @app.route('/timeline')
 def tl():
