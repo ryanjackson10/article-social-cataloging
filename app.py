@@ -101,7 +101,7 @@ def tl():
     if 'user' in session:
         follows__ = [i.followed for i in follows_.query.filter_by(user=session['user'])] #find all users the current user follows and put them in a list
         data = [i for i in posts_.query.all() if str(i.user).lower() in follows__] #search through all posts to find posts by those users. Again, not sure how it scales.
-        return render_template('test.html',data=reversed(data))
+        return render_template('user_timeline.html',data=reversed(data))
     else:
         return 'not logged in!'
 
@@ -116,7 +116,7 @@ def tl_options(): #in addition to viewing their friends' posts and their accompa
 
 @app.route('/search')
 def search_friend():
-    return render_template('testing.html')
+    return render_template('search_for_friends.html')
 
 @app.route('/log')
 def log_new():
