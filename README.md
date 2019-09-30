@@ -5,7 +5,6 @@ This website, running at www.chroniclingkane.com allows users to log and review 
 
 Future Improvements:
 want to improve the aesthetics of the different pages and give it some of the features that Letterboxd/Goodreads have that make those sites really worthwhile, in my opinion. A few that came to mind:
-- allow users to see who follows them
 - get the photos from the articles and save them to an SQL table. This could go a long way towards making the timeline and profile layouts more aesthetic
 - implement a "ratings" system
 - allow profile pictures
