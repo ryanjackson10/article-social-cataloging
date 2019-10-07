@@ -15,3 +15,5 @@ want to improve the aesthetics of the different pages and give it some of the fe
 - allow users to store articles in "folders"
 
 so yeah... a lot...
+
+Update 10/6/19: made the homepage a bit nicer. Spoiler alert: it's still pretty ugly. 
