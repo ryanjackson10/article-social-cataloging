@@ -2,17 +2,22 @@ from flask import Flask, request, flash, url_for, redirect, render_template,sess
 from flask_sqlalchemy import SQLAlchemy
 import lxml.html
 from urllib.request import urlopen
+import flask_avatars
+from flask_avatars import Avatars
 import ssl
+import hashlib
 import os
 import time
 
+
 app = Flask(__name__)
-app.secret_key = os.urandom(24) #for user sessions
+avatars = Avatars(app)
+app.secret_key = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.sqlite3'
 
 db = SQLAlchemy(app)
 
-class posts_(db.Model): #creating the tables in SQLAlchemy
+class posts_(db.Model):
    id = db.Column('student_id', db.Integer, primary_key = True)
    user = db.Column(db.String(25))
    url = db.Column(db.String(65))
@@ -25,16 +30,8 @@ class posts_(db.Model): #creating the tables in SQLAlchemy
        self.title = title
        self.review = review
 
-class users_(db.Model):
-    id = db.Column('student_id', db.Integer, primary_key = True)
-    username = db.Column(db.String(25))
-    password = db.Column(db.String(25))
 
-    def __init__(self,username,password):
-        self.username = username
-        self.password = password
-
-class follows_(db.Model):
+class follows(db.Model):
     id = db.Column('student_id', db.Integer, primary_key = True)
     user = db.Column(db.String(25))
     followed = db.Column(db.String(25))
@@ -43,7 +40,21 @@ class follows_(db.Model):
         self.user = user
         self.followed = followed
 
-db.create_all() #commented this out after the first run since the tables only need to be created once
+
+
+class users(db.Model):
+    id = db.Column('student_id', db.Integer, primary_key = True)
+    db.Column(db.String(25))
+    password = db.Column(db.String(25))
+    email = db.Column(db.String(75))
+
+    def __init__(self,username,password,email):
+        self.username = username
+        self.password = password
+        self.email = email
+
+
+db.create_all() 
 
 
 @app.route('/')
@@ -51,7 +62,7 @@ def homepage():
     return render_template('homepage.html')
 
 @app.route('/',methods=['POST'])
-def homepage_options(): #users have two options on the homepage: log in or sign up.
+def homepage_options():
     if request.form['btn'] == 'LogIn':
         return redirect(url_for('login'))
     elif request.form['btn'] == 'SignUp':
@@ -63,12 +74,13 @@ def login():
 
 @app.route('/login',methods=['POST'])
 def check_credentials():
-    username = str(request.form['username'])
+    username = request.form['username']
     password = request.form['password']
-    for i in users_.query.all(): #check if user exists
+    for i in users.query.all():
         if username == i.username:
             if password == i.password:
-                session['user'] = useit #create user session
+                session['user'] = username
+                session['email'] = str(i.email)
                 return redirect(url_for('profile'))
             else:
                 return 'Incorrect password!'
@@ -78,43 +90,56 @@ def check_credentials():
 def signup():
     return render_template('signup.html')
 
+
 @app.route('/profile')
-def profile():
+def profile(current_user=username):
     if 'user' in session:
-        return render_template('profile_page.html',data=reversed([i for i in posts_.query.filter_by(user=session['user'])])) #find all posts from user. Not sure how this scales
+        return render_template('profile_page.html', data=reversed([i for i in posts_.query.filter_by(user=session['user'])]),email_hash = hashlib.md5(session['email'].lower().encode('utf-8')).hexdigest(),articles=str(len([i for i in posts_.query.filter_by(user=session['user'])])),following=str(len([i for i in follows_.query.filter_by(user=session['user'])])),follows = str(len([i for i in follows_.query.filter_by(followed=session['user'])])),user=session['user'])
     else:
-        return 'not logged in!'
+        return 'Not logged in!'
 
 @app.route('/profile',methods=['POST'])
-def profile_options(): #users have 5 options from their profile in addition to viewing their posts and the accompanying hyperlinks. They can check their timeline, follow a user, log a new article, delete and article they've already logged, or view their followers
+def profile_options():
     if request.form['btn'] == 'timeline':
-        return redirect(url_for('tl'))
+        return redirect(url_for('tl',current_user=username))
     elif request.form['btn'] == 'search':
         return redirect(url_for('search_friend'))
     elif request.form['btn'] == 'log':
         return redirect(url_for('log_new'))
     elif request.form['btn'] == 'delete':
         return redirect(url_for('delete'))
-    elif request.form['btn'] == 'view_followers':
+    elif request.form['btn'] == 'followers':
         return redirect(url_for('followers'))
+    elif request.form['btn'] == 'following':
+        return redirect(url_for('following'))
+    elif request.form['btn'] == 'articles':
+        return render_template('profile_page.html', data=reversed([i for i in posts_.query.filter_by(user=session['user'])]),email_hash = hashlib.md5(session['email'].lower().encode('utf-8')).hexdigest(),articles=str(len([i for i in posts_.query.filter_by(user=session['user'])])),following=str(len([i for i in follows_.query.filter_by(user=session['user'])])),follows = str(len([i for i in follows_.query.filter_by(followed=session['user'])])),user=session['user'])
+
 
 @app.route('/followers')
 def followers():
     if 'user' in session:
-        followers_ = [i.user for i in follows_.query.filter_by(followed=session['user'])]
+        followers_ = [i.user for i in follows.query.filter_by(followed=session['user'])]
         return f'your follower(s) are {followers_}!'
 
-@app.route('/timeline')
-def tl():
+@app.route('/following')
+def following():
     if 'user' in session:
-        follows__ = [i.followed for i in follows_.query.filter_by(user=session['user'])] #find all users the current user follows and put them in a list
-        data = [i for i in posts_.query.all() if str(i.user).lower() in follows__] #search through all posts to find posts by those users. Again, not sure how it scales.
-        return render_template('user_timeline.html',data=reversed(data))
+        following_ = [i.user for i in follows.query.filter_by(user=session['user'])]
+        return f'you\'re following {following_}!'
+
+
+@app.route('/timeline')
+def tl(current_user=username):
+    if 'user' in session:
+        follows__ = [i.followed for i in follows_.query.filter_by(user=session['user'])]
+        data = [i for i in posts_.query.all() if str(i.user).lower() in follows__]
+        return render_template('test.html',data=reversed(data))
     else:
         return 'not logged in!'
 
 @app.route('/timeline',methods=['POST'])
-def tl_options(): #in addition to viewing their friends' posts and their accompanying hyperlinks, users can log a new article, follow a new user, or return to their profile
+def tl_options():
     if request.form['btn'] == 'log':
         return redirect(url_for('log_new'))
     elif request.form['btn'] == 'search':
@@ -124,7 +149,7 @@ def tl_options(): #in addition to viewing their friends' posts and their accompa
 
 @app.route('/search')
 def search_friend():
-    return render_template('search_for_friends.html')
+    return render_template('testing.html')
 
 @app.route('/log')
 def log_new():
@@ -132,26 +157,29 @@ def log_new():
 
 @app.route('/log',methods=['POST'])
 def log():
-    ssl._create_default_https_context = ssl._create_unverified_context
-    url = request.form['url'].lower()
-    review = request.form['review']
-    url_ = str(url)
-    tree = (lxml.html.parse(urlopen(url_))) #parse site's HTML/XML with lxml
-    title =str((tree.find('//title').text.replace('â','\'').replace('\x80\x99',''))) #find the title
-    if 'user' in session:
-        new_article = posts_(session['user'],url,title,review)
-        db.session.add(new_article)
-        db.session.commit()
-        return redirect(url_for('profile'))
-    else:
-        return 'not logged in!'
+    try:
+        ssl._create_default_https_context = ssl._create_unverified_context
+        url = request.form['title'].lower()
+        review = request.form['review']
+        url_ = str(url)
+        tree = (lxml.html.parse(urlopen(url_)))
+        title =str((tree.find('//title').text.replace('â','\'').replace('\x80\x99','')))
+        if 'user' in session:
+            new_article = posts_(session['user'],url,title,review)
+            db.session.add(new_article)
+            db.session.commit()
+            return redirect(url_for('profile'))
+        else:
+            return 'not logged in!'
+    except ValueError:
+        return 'Invalid URL! Make sure that it starts with https://'
 
 
 @app.route('/search',methods=['POST'])
 def add_friend():
     searched = request.form['username']
     exists = False
-    for j in users_.query.all(): #check to see if user exists
+    for j in users__.query.all():
         if j.username == searched:
             exists = True
             break
@@ -171,13 +199,15 @@ def add_friend():
 def create_credentials():
     username_attempt = request.form['username']
     password_attempt = request.form['password']
-    for i in users_.query.all():
+    for i in users__.query.all():
         if i.username == username_attempt:
             return 'Username Taken!'
-    new_user = users_(request.form['username'], request.form['password'])
-    db.session.add(new_user) #add the new credentials to the correct table
+    new_user = users__(request.form['username'], request.form['password'], request.form['email'])
+    db.session.add(new_user)
     db.session.commit()
-    return redirect(url_for('login'))
+    session['user'] = username_attempt
+    session['email'] = request.form['email']
+    return redirect(url_for('profile'))
 
 @app.route('/delete')
 def delete():
@@ -185,7 +215,7 @@ def delete():
 
 @app.route('/delete',methods=['POST'])
 def deletion():
-    url = request.form['username']
+    url = request.form['url']
     if 'user' in session:
         posts_.query.filter_by(user=session['user'],url=url).delete()
         db.session.commit()
@@ -193,6 +223,6 @@ def deletion():
     else:
         return 'Not Logged In!'
 
+
 if __name__ == "__main__":
-   #db.create_all()
    app.run(debug=True)
