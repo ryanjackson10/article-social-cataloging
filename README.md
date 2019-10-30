@@ -17,3 +17,5 @@ want to improve the aesthetics of the different pages and give it some of the fe
 so yeah... a lot...
 
 Update 10/6/19: made the homepage a bit nicer. Spoiler alert: it's still pretty ugly. 
+
+Update 10/29/19: really happy with this update. I revamped the entire profile page, including adding a profile picture option which I used Gravatar for. I also added a sidebar with options to view media criticisms for some of media critics who have influenced me most–Chomsky, Orwell, Parenti, and others. I'm really liking how it looks. Figure I'll easily be able to add a very similar aesthetic to the timeline feature very soon. There are still some small bugs, like you can technically follow the same person unlimited times, but I'm just really pleased to have a revamped homepage. I'll re-comment in the coming days. Probably should've been commenting all along, but hey, I'm still pretty new at this.
