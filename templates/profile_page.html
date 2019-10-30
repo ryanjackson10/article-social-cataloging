@@ -2,12 +2,17 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
 <style>
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
+}
+
+.vl {
+  border-top: 2px solid grey;
+  margin-right: 40%;
 }
 
 td, th {
@@ -17,13 +22,13 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: #163A3E;
 }
 
 .btn {
   border: none;
   background-color: #22D43F;
-  padding: 14px 28px;
+  padding: 14px 38px;
   font-size: 16px;
   cursor: pointer;
   display: inline-block;
@@ -34,6 +39,43 @@ tr:nth-child(even) {
 
 }
 
+.tab {
+  overflow: hidden;
+  background-color: white;
+  color:black;
+  margin-right: 40%
+}
+
+
+.tab-button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 30px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  color:#7AA6FF
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: black;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
 .button-primary {
   border: none;
   background-color: black;
@@ -42,6 +84,14 @@ tr:nth-child(even) {
   cursor: pointer;
   display: inline-block;
   color: white;
+}
+
+.articletitles {
+  font-size:12px;
+  margin-top: 1%;
+  margin-right:40%;
+  margin-left: 10%;
+
 }
 
 .button-default {
@@ -57,37 +107,312 @@ tr:nth-child(even) {
   color: white;
 }
 
+a:link {
+color: black;
+}
 
-.btn:hover {background: #1CB235;}
+/* visited link */
+a:visited {
+color: black;
+font-size:18px
+}
+
+.username{
+  font-size:22px;
+  color:black;
+  position:absolute;
+  margin-left:145px
+}
+
+.image {
+  position:absolute;
+  margin-top:10px;
+  margin-left:6px;
+  width:80px
+}
+
+.follow_counts {
+  border:none;
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:145px;
+  margin-top:65px;
+}
+
+.follow_counts:hover {
+  color:#7AA6FF;
+}
+
+.follows_counts {
+  border:none;
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:265px;
+  margin-top:65px;
+}
+
+.follows_counts:hover{
+  color:#7AA6FF
+}
+
+.article_counts {
+  border:none;
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:382px;
+  margin-top:65px;
+}
+
+.article_counts:hover{
+  color:#7AA6FF
+}
+
+
+.inbetween {
+  border-left: 2px solid grey;
+  height:30px;
+  margin-top:63px;
+  margin-left:255px;
+  position:absolute;
+
+}
+
+.inbetween2 {
+  border-left: 2px solid grey;
+  height:30px;
+  margin-top:63px;
+  margin-left:373px;
+  position:absolute;
+
+}
+
+
+.avatar {
+  margin-left:0px;
+  width=150px;
+  height=50px
+}
+
+.review {
+  font-size:16px
+}
+.noamchomsky {
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:870px;
+  margin-top:65px;
+  display: inline-block;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 20px;
+  width: 300px;
+  height: 60px;
+  text-align: right
+}
+
+.noamchomsky:hover {
+  color:#7AA6FF
+}
+
+.noamchomsky img{
+  display: block;
+  height: 20%;
+  width: 100px;
+}
+
+.chomskypic {
+  margin-left: 600px;
+  position: absolute;
+}
+
+.georgeorwell {
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:870px;
+  margin-top:175px;
+  display: inline-block;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 20px;
+  width: 300px;
+  height: 60px;
+  text-align: right
+}
+
+.georgeorwell:hover {
+  color:#7AA6FF
+}
+
+.michaelparenti {
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:870px;
+  margin-top:275px;
+  display: inline-block;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 20px;
+  width: 300px;
+  height: 60px;
+  text-align: right
+}
+
+.michaelparenti:hover {
+  color:#7AA6FF
+}
+
+.edwardsaid {
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:870px;
+  margin-top:375px;
+  display: inline-block;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 20px;
+  width: 300px;
+  height: 60px;
+  text-align: right
+}
+
+.edwardsaid:hover {
+  color:#7AA6FF
+}
+
+.edwardsherman {
+  transition:.3s;
+  cursor: pointer;
+  font-size:18px;
+  outline: none;
+  color:black;
+  position:absolute;
+  margin-left:870px;
+  margin-top:475px;
+  display: inline-block;
+  border-radius: 25px;
+  border: 1px solid black;
+  padding: 20px;
+  width: 300px;
+  height: 60px;
+  text-align: right
+}
+
+.edwardsherman:hover {
+  color:#7AA6FF
+}
+
+.onmediaconsumption {
+  font-size:22px;
+  color:black;
+  position:absolute;
+  margin-left:870px
+
+}
+
+.seperation {
+  border-left: 1px solid black;
+  height: 550px;
+  margin-left: 810px;
+  position: absolute;
+
+}
+
+
+img {
+  border-radius: 50%;
+}
+
+
+.btn:hover {background: white;}
 
 .success {color: white;}
 
 </style>
 </head>
-<body>
+<body style="background-color:white;">
+  <div class='seperation'></div>
+  <h1 class='onmediaconsumption'>On Media Consumption</h1>
+  <form action='https://youtu.be/AnrBQEAM3rE'>
 
-<h2 align="center">Profile</h2>
-<div>
+  <button type = 'submit' id="close-image" class="noamchomsky" style="background-image:url('https://i.redd.it/6j0l4in3cdt31.png')" name='btn' value='chomsky' align='right'>Noam Chomsky</button>
+
+</form>
+
+<form action='http://www.public-library.uk/ebooks/72/30.pdf'>
+
+  <button type = 'submit' id="close-image" class="georgeorwell" style="background-image:url('https://i.redd.it/7va46hiabdt31.png')" name='btn' value='orwell' align='right'>George Orwell</button>
+</form>
+
+<form action='https://youtu.be/CHwr2Y7mbhc'>
+  <button type = 'submit' id="close-image" class="michaelparenti" style="background-image:url('https://i.redd.it/pu2cg7fp8et31.png')" name='btn' value='orwell' align='right'>Michael Parenti</button>
+</form>
+
+<form action='http://www2.idehist.uu.se/distans/ilmh/pm/said-orientalism02.htm'>
+  <button type = 'submit' id="close-image" class="edwardsaid" style="background-image:url('https://i.redd.it/lmr8m0lgbet31.png')" name='btn' value='orwell' align='right'>Edward Said</button>
+</form>
+
+<form action='https://chomsky.info/consent01/'>
+  <button type = 'submit' id="close-image" class="edwardsherman" style="background-image:url('https://i.redd.it/gvzjn9mnwjt31.png')" name='btn' value='orwell' align='right'>Edward S. Herman</button>
+</form>
+
+
+  <h1 class="username"> {{ user }} </h1>
   <form method='POST'>
-    <button type = 'submit' name = 'btn' value = 'log' class = 'button-primary'>Log New Article +</button>
-    <button type = 'submit' name = 'btn' value = 'search' class = 'button-primary'>Follow a User</button>
-    <button type = 'submit' name = 'btn' value = 'view_followers' class = 'button-primary'>View Followers</button>
-    <button type = 'submit' name = 'btn' value = 'timeline' class = 'button-primary'>Timeline</button>
-    <button type = 'submit' name = 'btn' value = 'delete' class = 'button-primary'>Delete an Entry</button>
+  <button type = 'submit' class="follow_counts" name='btn' value='followers' > {{ follows }} Followers</button> <div class='inbetween'></div>
+  <button type = 'submit' class="follows_counts" name='btn' value='following' > {{ following }} Following</button> <div class='inbetween2'></div>
+  <button type = 'submit' class="article_counts" name='btn' value='articles' > {{ articles }} Articles</button> <div class='inbetween2'></div>
+
+</form>
+  <div class = 'avatar'><img src="{{ avatars.gravatar(email_hash) }}" height = "125" width="125" border-radius: 50%/> </div>
+
+
+<div class="tab">
+  <form method='POST'>
+  <button type = 'submit' class="tab-button" name='btn' value='log'>Log Article +</button>
+  <button type = 'submit' class="tab-button" name='btn' value='timeline'>Timeline</button>
+  <button type = 'submit' class="tab-button" name='btn' value='delete'>Delete an Entry</button>
+  <button type = 'submit' class="tab-button" name='btn' value='search'>Follow a User</button>
+  <br>
+  <br>
+  <br>
 </form>
 </div>
+
 <table>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <tr>
-    <th>Article (hyperlinked)</th>
-    <th>Review</th>
-  </tr>
+  <form method='POST'>
   {% for item in data %}
-  <tr>
-    <td><a href={{ item.url }}>{{ item.title }}</a></td>
-    <td>{{ item.review }}</td>
-  </tr>
+  <tr class="film-detail"> <div class='image' data-image-width="70" data-image-height="105"><img src="{{ avatars.gravatar(email_hash) }}" align=left class="image" width="100" height="70" alt="Star Wars: Episode II - Attack of the Clones"/> </button> </div> <div class="articletitles"> <h1 font-size:14px><a href={{ item.url }}>{{ item.title }}</a></h1> <p class='review'>{{ item.review }}</p> </div><div class="vl"></div>
   {% endfor %}
+</form>
 
 </table>
 
@@ -106,6 +431,8 @@ function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
 </script>
+
+
 
 </body>
 </html>
